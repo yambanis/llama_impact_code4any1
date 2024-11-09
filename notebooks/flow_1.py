@@ -47,13 +47,11 @@ user_onboarding = Task(
 question_creation = Task(
   config=tasks_config['question_creation'],
   agent=question_creation_agent,
-  context=[user_onboarding]
 )
 
 question_critic = Task(
   config=tasks_config['question_critic'],
   agent=question_creation_agent,
-  context=[user_onboarding, question_creation]
 )
 
 onboarding_crew = Crew(
@@ -80,30 +78,40 @@ question_crew = Crew(
 from crewai import Flow
 from crewai.flow.flow import listen, start
 
-class fullFlow(Flow):
+class onboardingFlow(Flow):
     @start()
     def fetch_user(self):
         user_input = {
             'user_input': input()
         }
-
-        
-
         return user_input
-    
+
     @listen(fetch_user)
     def onboarding(self, user_input):
         user_info = onboarding_crew.kickoff(inputs=user_input)
-        self.state['user_info'] = user_info
+        with open('state.txt', 'w') as f:
+            f.write(str(user_info))
 
         return user_info
+
+
+class questionFlow(Flow):
+    @start()
+    def fetch_user_info(self):
+        with open('state.txt', 'r') as f:
+            user_persona = f.read()
+        self.state['user_persona'] = user_persona  
+
+        return user_persona
     
-    @listen(onboarding)
-    def question_creation(self, user_info):
-        question = question_crew.kickoff()
+    @listen(fetch_user_info)
+    def question_creation(self, user_persona):
+        question = question_crew.kickoff(inputs={'user_persona': user_persona})
     
         return question
 
-flow = fullFlow()
-flow.plot()
-question = flow.kickoff()
+oflow = onboardingFlow()
+oflow.kickoff()
+
+qflow = questionFlow()
+qflow.kickoff()
