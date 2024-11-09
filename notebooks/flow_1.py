@@ -9,6 +9,7 @@ from crewai import LLM
 
 llm = LLM(
     model="groq/llama-3.1-70b-versatile", 
+    #model="groq/llama-3.1-8b-instant",
     api_key="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"
 )
 # Define file paths for YAML configurations
@@ -54,6 +55,11 @@ question_critic = Task(
   agent=question_creation_agent,
 )
 
+teaching_help = Task(
+    config=tasks_config['teaching_help'],
+    agent=question_creation_agent
+)
+
 onboarding_crew = Crew(
   agents=[
     onboarding_agent
@@ -61,7 +67,7 @@ onboarding_crew = Crew(
   tasks=[
     user_onboarding
   ],
-  verbose=True
+  verbose=False
 )
 
 question_crew = Crew(
@@ -72,7 +78,17 @@ question_crew = Crew(
     question_creation,
     question_critic
   ],
-  verbose=True
+  verbose=False
+)
+
+help_crew = Crew(
+  agents=[
+    question_creation_agent
+  ],
+  tasks=[
+    teaching_help
+  ],
+  verbose=False
 )
 
 from crewai import Flow
@@ -81,6 +97,7 @@ from crewai.flow.flow import listen, start
 class onboardingFlow(Flow):
     @start()
     def fetch_user(self):
+        print("Me conte sobre você")
         user_input = {
             'user_input': input()
         }
@@ -89,7 +106,7 @@ class onboardingFlow(Flow):
     @listen(fetch_user)
     def onboarding(self, user_input):
         user_info = onboarding_crew.kickoff(inputs=user_input)
-        with open('state.txt', 'w') as f:
+        with open('user_persona.txt', 'w') as f:
             f.write(str(user_info))
 
         return user_info
@@ -98,7 +115,7 @@ class onboardingFlow(Flow):
 class questionFlow(Flow):
     @start()
     def fetch_user_info(self):
-        with open('state.txt', 'r') as f:
+        with open('user_persona.txt', 'r') as f:
             user_persona = f.read()
         self.state['user_persona'] = user_persona  
 
@@ -107,11 +124,57 @@ class questionFlow(Flow):
     @listen(fetch_user_info)
     def question_creation(self, user_persona):
         question = question_crew.kickoff(inputs={'user_persona': user_persona})
+
+        with open('user_messages.txt', 'w+') as f:
+            f.write(str(question))
     
         return question
+
+class helpFlow(Flow):
+    @start()
+    def fetch_user_info(self):
+        with open('user_persona.txt', 'r') as f:
+            user_persona = f.read()
+        
+        with open('user_messages.txt', 'r') as f:
+            question = f.read()
+
+        print("A pergunta está clara? Se não, por favor, me diga o que está confuso.")
+        user_feedback = input().strip()
+        
+        user_input = {
+            'user_feedback': user_feedback,
+            'user_persona': user_persona,
+            'question': question
+        }
+
+        self.state.update(user_input)
+
+
+        return user_input
+    
+    @listen(fetch_user_info)
+    def guidance(self, user_input):
+        help_message = help_crew.kickoff(inputs=user_input)
+    
+        with open('user_messages.txt', 'w+') as f:
+            f.write(str(help_message))
+        
+        return help_message
 
 oflow = onboardingFlow()
 oflow.kickoff()
 
+print("**Finished onboarding flow**")
+
 qflow = questionFlow()
-qflow.kickoff()
+question = qflow.kickoff()
+
+print("**Finished Question Flow**")
+print(question)
+
+hflow = helpFlow()
+help_message = hflow.kickoff()
+
+print("**Finished Help Flow**")
+print(help_message)

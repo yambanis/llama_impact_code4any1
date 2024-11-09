@@ -1,0 +1,7 @@
+<user_language> Português </user_language>
+
+<persona> Guilherme é um jovem operador de caixa em um supermercado que busca aprender programação para aplicar em seu dia a dia. Não há informações detalhadas sobre sua idade, mas é provável que esteja na faixa dos 18 aos 30 anos, considerando sua profissão e o desejo de aprender novas habilidades. Guilherme parece ser uma pessoa motivada e com interesse em melhorar suas habilidades, o que sugere que seja uma pessoa proativa e engajada em seu desenvolvimento pessoal e profissional. </persona>
+
+<tastes> Guilherme parece ter interesse em aprender programação para aplicar em situações práticas e do dia a dia, o que sugere que seja uma pessoa prática e que valorize a aplicabilidade do conhecimento. Ele não mencionou nenhum interesse específico em linguagens de programação ou áreas de foco, mas é provável que esteja aberto a aprender e explorar diferentes opções. Guilherme pode preferir um estilo de aprendizado prático e interativo, com exemplos concretos e exercícios para reforçar o conhecimento. </tastes>
+
+<knowledge_level> Guilherme não tem experiência prévia em programação e não mencionou qualquer formação ou educação em áreas relacionadas. Isso sugere que ele esteja começando do zero e precise de uma base sólida em conceitos básicos de programação. No entanto, sua motivação e desejo de aprender são importantes fatores que podem ajudá-lo a progredir rapidamente. É provável que Guilherme precise de apoio e orientação ao longo do processo de aprendizado, especialmente nos estágios iniciais. </knowledge_level>
