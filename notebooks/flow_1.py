@@ -46,12 +46,14 @@ user_onboarding = Task(
 
 question_creation = Task(
   config=tasks_config['question_creation'],
-  agent=question_creation_agent
+  agent=question_creation_agent,
+  context=[user_onboarding]
 )
 
 question_critic = Task(
   config=tasks_config['question_critic'],
-  agent=question_creation_agent
+  agent=question_creation_agent,
+  context=[user_onboarding, question_creation]
 )
 
 onboarding_crew = Crew(
@@ -74,6 +76,7 @@ question_crew = Crew(
   ],
   verbose=True
 )
+
 from crewai import Flow
 from crewai.flow.flow import listen, start
 
