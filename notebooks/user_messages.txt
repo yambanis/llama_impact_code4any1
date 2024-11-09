@@ -1,9 +1,0 @@
-Olá Guilherme! Parece que você está tendo um pouco de dificuldade em entender o conceito de tipos de variáveis. Vamos trabalhar juntos para encontrar a resposta correta!
-
- Primeira dica: lembre-se que o tipo de variável depende do tipo de dado que você deseja armazenar. No caso da quantidade de um produto, você provavelmente vai querer armazenar um número. Mas, qual tipo de número?
-
-Segunda dica: pense sobre as opções fornecidas. Você tem variáveis de caractere (string), variáveis de número inteiro (int), variáveis de número real (float) e variáveis de data e hora (datetime). Qual dessas opções parece mais apropriada para armazenar uma quantidade de produto?
-
-Terceira dica: pense sobre o que você sabe sobre a quantidade de um produto. Você sabe que ela é sempre um número inteiro, não é? Você não pode ter meio produto ou um quarto de produto. Então, talvez uma variável de número inteiro possa ser a escolha certa...
-
-Feedback: você está fazendo um ótimo trabalho, Guilherme! Continue pensando e análise as opções novamente. Qual é o tipo de variável que você acha que seria mais apropriado para armazenar a quantidade de um produto?

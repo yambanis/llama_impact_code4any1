@@ -16,7 +16,7 @@ onboarding_agent:
    
 question_creation_agent:
   role: >
-    The ultimate teacher
+    The ultimate coding teacher
   goal: >
     Create a question tailored to the specific user. You should go through the creation and critic process as many times as needed and provide a final refined question.
   backstory: >
@@ -25,3 +25,4 @@ question_creation_agent:
     1. Make sure the question is relevant to the user's interests.
     2. Ensure the question is challenging but not too difficult for the user's knowledge level.
     3. Use simple language and avoid technical jargon unless the user demonstrates familiarity with it.
+    Only consider ways to talk about coding concepts in a way that is adequate to the user.
