@@ -1,0 +1,45 @@
+user_onboarding:
+  description: >
+    Use the input from the user to determine their persona, tastes, and knowledge level.
+    {user_input}
+  expected_output: >
+    <user_language>
+    The language that the user is interacting in. You should use it to reply.
+    </user_language>
+
+    <persona>
+    Provide a brief description of the user's background, age group, and any relevant personal information gathered during the conversation.
+    </persona>
+
+    <tastes>
+    List the user's interests, preferences, and learning style based on the information collected.
+    </tastes>
+
+    <knowledge_level>
+    Assess the user's current knowledge of programming and general scholarship, including any prior experience or education in related fields.
+    </knowledge_level>
+
+
+question_creation:
+  description: >
+    Create a question tailored to the specific user. Based on their persona, tastes and knowledge level.
+  expected_output: >
+    A question that is tailored to the user's interests and knowledge level. Make sure to reply in the user's language.
+    The question should contain the following structure:
+    1. A brief introduction or context to set the stage. Pick a specific topic to teach the user about.
+    2. The main question that challenges the user's knowledge and encourages critical thinking.
+    3. A set of multiple-choice answers that provide a range of options for the user to choose from.
+
+question_critic:
+  description: >
+    Provide feedback on the question created on the question_creation task.
+    Than, improve the question based on the feedback.
+  expected_output: >
+    <feedback>
+    Provide constructive feedback on the question created by the question_creation_agent.
+    Is it specific to the user's interests and knowledge level?
+    Does it have a specific context clearly defined for the user to progress in their learning?
+    </feedback>
+    <improved_question>
+    Provide a refined version of the question that incorporates the feedback provided.
+    </improved_question>
