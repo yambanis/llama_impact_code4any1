@@ -1,15 +1,16 @@
 from crewai import Flow, Crew
 from crewai.flow.flow import start, listen
-from agents import create_agent
-from tasks import create_task
+from src.agents import create_agent
+from src.tasks import create_task
 
 
 class FullFlow(Flow):
-    def __init__(self, llm, config):
+    def __init__(self, llm, config, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.agents_config = config['agents']
         self.tasks_config = config['tasks']
         self.onboarding_agent = create_agent(llm, self.agents_config['onboarding_agent'])
-        self.question_agent = create_agent(llm, self.agents_config['question_agent'])
+        self.question_agent = create_agent(llm, self.agents_config['question_creation_agent'])
 
         self.user_onboarding_task = create_task(self.tasks_config['user_onboarding'], self.onboarding_agent, [])
         self.question_creation_task = create_task(self.tasks_config['question_creation'], self.question_agent, [self.user_onboarding_task])
@@ -39,9 +40,8 @@ class FullFlow(Flow):
     @start()
     def fetch_user(self):
         user_input =  {
-            'user_input': self.state['user_input']
-        }
-
+            'user_input': self._state['message']
+        }    
         return user_input
     
     @listen(fetch_user)
@@ -54,5 +54,6 @@ class FullFlow(Flow):
     @listen(onboarding)
     def question_creation(self, user_info):
         question = self.question_crew.kickoff()
+        print(question)
     
         return question
