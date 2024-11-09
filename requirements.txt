@@ -1,0 +1,5 @@
+flask
+crewai
+twilio
+groq
+python-dotenv
