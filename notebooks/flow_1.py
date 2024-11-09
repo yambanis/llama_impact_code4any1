@@ -79,21 +79,23 @@ from crewai.flow.flow import listen, start
 
 class fullFlow(Flow):
     @start()
-    def user_input(self):
-        return {
+    def fetch_user(self):
+        user_input =  {
             'user_input': "Oi! Meu nome é Guilherme, tenho 32 anos de idade. Eu nunca programei antes, mas tenho curiosidade de aprender! Eu gosto de futebol e series."
         }
+
+        return user_input
     
-    @listen(user_input)
-    def onboarding(user_input):
+    @listen(fetch_user)
+    def onboarding(self, user_input):
         user_info = onboarding_crew.kickoff(inputs=user_input)
         self.state['user_info'] = user_info
 
         return user_info
     
     @listen(onboarding)
-    def question_creation(user_info):
-        question = question_crew.kickoff(inputs=user_info)
+    def question_creation(self, user_info):
+        question = question_crew.kickoff()
     
         return question
 
