@@ -83,9 +83,11 @@ from crewai.flow.flow import listen, start
 class fullFlow(Flow):
     @start()
     def fetch_user(self):
-        user_input =  {
-            'user_input': "Oi! Meu nome é Guilherme, tenho 32 anos de idade. Eu nunca programei antes, mas tenho curiosidade de aprender! Eu gosto de futebol e series."
+        user_input = {
+            'user_input': input()
         }
+
+        
 
         return user_input
     
