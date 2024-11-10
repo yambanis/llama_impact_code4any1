@@ -1,6 +1,6 @@
-import sqlite3
-from datetime import datetime
 import json
+import sqlite3
+
 
 class UserDatabase:
     def __init__(self, db_name="users.db"):

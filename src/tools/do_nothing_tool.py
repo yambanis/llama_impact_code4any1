@@ -1,14 +1,17 @@
-DO_NOTHING_FUNCTION_NAME = "do_nothing_function"
-DO_NOTHING_FUNCTION_DESC = """\
-If you feel like you don't need to call a function.\
+FUNCTION_NAME = "call_no_tool"
+FUNCTION_DESC = """\
+ALWAYS call this tool ONLY if no tool can be called based on the last user message.\
 """
 
 do_nothing_function = {
     "type": "function",
     "function": {
-        "name": DO_NOTHING_NAME,
-        "description": DO_NOTHING_DESC,
+        "name": FUNCTION_NAME,
+        "description": FUNCTION_DESC,
         "parameters": {},
         "required": [],
     },
 }
+
+def do_nothing(*args, **kwargs):
+    return "preguiça de responderkkkkkkkkkj"
