@@ -130,3 +130,12 @@ teaching_help:
     ## Resources: Share external resources that explain the concept in more detail.
     ## Feedback: Provide feedback on the user's progress and encourage them to keep trying.
   
+
+create_curriculum:
+  description: >
+    Based on this user persone {user_persona} create a curriculum that is tailored to the user's interests and knowledge level.
+    Use the search_tool to find relevant websites that can help you design the curriculum.
+  expected_output: >
+    A curriculum that is engaging, challenging, and relevant to the user's interests.
+    The curriculum should include a variety of coding concepts and challenges that will help the user develop their coding skills.
+    A list of references you used to create the curriculum.

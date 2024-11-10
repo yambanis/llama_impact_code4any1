@@ -1,19 +1,8 @@
-Parece que você está procurando entender melhor as diferenças entre as estruturas de dados em Python, como listas, tuplas e conjuntos.
+Contexto: Após cadastrar os materiais do orçamento no programa de gerenciamento de orçamentos você percebeu que é necessário gerenciar alguns custos adicionais como mão de obra, equipamentos e outros gastos indiretos para concluir o projeto.
 
-## Hints:
+Question: Qual o tipo de dado melhor se adequa para calcular o custo total com esses gastos indiretos em Python?
 
-1. Listas são coleções ordenadas de itens que podem ser mutáveis, ou seja, seus itens podem ser adicionados, removidos ou modificados.
-2. Tuplas são coleções ordenadas de itens que são imutáveis, ou seja, seus itens não podem ser adicionados, removidos ou modificados após a criação da tupla.
-3. Conjuntos são coleções desordenadas de itens únicos que são mutáveis.
-
-## Resources:
-
-* A página da documentação oficial do Python sobre estruturas de dados: https://docs.python.org/3/tutorial/datastructures.html
-* O tutorial de estruturas de dados do site W3Schools: https://www.w3schools.com/python/python_arrays.asp
-* O artigo sobre estruturas de dados do site Real Python: https://realpython.com/python-data-structures/
-
-## Feedback:
-
-Você está no caminho certo ao procurar entender melhor as diferenças entre as estruturas de dados em Python. Continue estudando e praticando, e você logo estará criando programas complexos e eficientes.
-
-Agora que você sabe mais sobre as estruturas de dados em Python, experimente criar um programa que use uma lista para armazenar endereços de entrega. Depois, tente criar um programa que use um conjunto para armazenar endereços de entrega únicos.
+A) Float
+B) Int
+C) String
+D) Boolean

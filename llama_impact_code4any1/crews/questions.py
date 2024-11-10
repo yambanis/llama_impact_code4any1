@@ -37,12 +37,18 @@ class questionFlow(Flow):
         with open('user_persona.txt', 'r') as f:
             user_persona = f.read()
         self.state['user_persona'] = user_persona  
+        with open('curriculum.txt', 'r') as f:
+            curriculum = f.read()
+        self.state['curriculum'] = curriculum  
 
-        return user_persona
+        return {
+            'user_persona': user_persona,
+            'curriculum': curriculum
+        }
     
     @listen(fetch_user_info)
-    def question_creation(self, user_persona):
-        question = question_crew.kickoff(inputs={'user_persona': user_persona})
+    def question_creation(self, inputs):
+        question = question_crew.kickoff(inputs=inputs)
 
         with open('user_messages.txt', 'w+') as f:
             f.write(str(question))

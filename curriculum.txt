@@ -1,0 +1,57 @@
+Curriculum:
+Module 1: Introduction to Coding Concepts
+
+* Week 1: Introduction to programming languages (HTML, CSS, JavaScript)
+* Week 2: Basic coding concepts (variables, control structures, functions)
+* Week 3: Introduction to project-based learning
+* Project: Build a simple calculator using HTML, CSS, and JavaScript
+
+Module 2: Development of Coding Skills
+
+* Week 4: Introduction to conditional statements
+* Week 5: Loops (for, while, do-while)
+* Week 6: Functions (types, syntax, parameters)
+* Week 7: Arrays and data structures
+* Project: Develop a simple game using JavaScript (e.g., Tic-Tac-Toe, Snake)
+
+Module 3: Practical Projects and Portfolio Development
+
+* Week 8: Build a simple application (e.g., to-do list app, weather app)
+* Week 9: Develop a more complex project (e.g., building a simple e-commerce site)
+* Week 10: Create a portfolio showcasing your work
+* Project: Create a final project that demonstrates your skills and what you've learned throughout the curriculum (e.g., building a simple mobile app)
+
+Reading materials:
+- FreeCodeCamp
+- Codecademy
+- Project Euler
+- Python for Everybody (book)
+
+Online courses:
+- Codecademy
+- FreeCodeCamp
+- Udemy
+
+Coding challenges:
+- CodeWars
+- HackerRank
+- CodinGame
+- CodeChef
+- Project Euler
+
+Project ideas:
+- Martyr2's Mega Project Ideas (110 Projects)
+- Rosettacode.org Programming Tasks (500+ programming tasks)
+
+References:
+- A Free Coding Curriculum for Beginners | by Evan Kozliner - Medium
+- 1000+ Beginner Programming Projects (x-post /r/programming)
+- practical-tutorials/project-based-learning - GitHub
+- Coding Practice for Beginners: Top Websites in 2024 - Flatiron School
+- 9 Fun Coding Projects for Beginners - BestColleges.com
+- Codecademy: Learn to Code - for Free
+- What are good starter projects to practice learning a new programming language? - Quora
+- EasyCode Computer Programming Curriculum for K-12 Students
+- 25+ Coding Projects for Beginners and Beyond - Science Buddies
+- Learn to Code — For Free — Coding Courses for Busy People
+- 72 coding lessons for beginners - Python for Everybody - Book
