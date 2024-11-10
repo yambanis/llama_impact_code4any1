@@ -16,7 +16,7 @@ def chat_final_response(
     tool_used: str,
     tool_observation: str,
     history: List[Dict[str, str]],
-    client: Groq
+    client: Groq,
 ):
     if not history:
         raise ValueError
@@ -27,7 +27,7 @@ def chat_final_response(
     else:
       history = {"role": "system", "content": SYSTEM_PROMPT} + history
 
-    if tool_used != "not_use_tool":  # TODO: Get the correct naming from Enzo's code.
+    if tool_used != "do_nothing":
         new_message = [
             {
                 "role": "tool",
