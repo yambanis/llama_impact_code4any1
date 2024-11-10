@@ -2,15 +2,19 @@ from crewai import Flow
 from crewai.flow.flow import listen, start
 from crewai import Agent, Task, Crew
 from llama_impact_code4any1.crews.base_config import llm, agents_config, tasks_config
+from crewai_tools import SerperDevTool
 
 question_creation_agent = Agent(
   config=agents_config['question_creation_agent'],
   llm=llm
 )
 
+search_tool = SerperDevTool()
+
 teaching_help = Task(
     config=tasks_config['teaching_help'],
-    agent=question_creation_agent
+    agent=question_creation_agent,
+    tools=[search_tool]
 )
 
 help_crew = Crew(

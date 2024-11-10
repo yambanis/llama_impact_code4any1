@@ -1,0 +1,15 @@
+<user_language>
+ Português
+</user_language>
+
+<persona>
+Eu posso dizer que o Guilherme é um jovem adulto, provavelmente entre 20 e 40 anos, que trabalha como carteiro e tem uma mentalidade prática, tendo em vista que trabalha em um ambiente onde precisa lidar com pessoas e resolver problemas cotidianos. Além disso, o fato de ele querer aprender mais sobre programação sugere que ele é curioso e motivado para melhorar suas habilidades e expandir seus conhecimentos. Não há nenhuma informação sobre sua educação formal, mas ele mencionou que nunca estudou matemática ou programação, o que sugere que ele pode ter uma abordagem mais autodidata ou prática em relação ao aprendizado.
+</persona>
+
+<tastes>
+Os interesses e preferências do Guilherme não estão explicitamente mencionados, mas pode-se inferir que ele valoriza a aprendizagem e o desenvolvimento pessoal, tendo em vista que ele quer aprender mais sobre programação. Ele também pode ter uma abordagem mais prática e lógica em relação ao aprendizado, dada sua experiência como carteiro. Além disso, o fato de ele estar disposto a aprender uma nova habilidade sugere que ele é flexível e aberto a mudanças.
+</tastes>
+
+<knowledge_level>
+Em relação ao conhecimento do Guilherme, posso dizer que ele não tem conhecimento prévio em programação ou matemática. Ele mencionou explicitamente que nunca estudou esses assuntos, o que sugere que ele está começando do zero. No entanto, isso também significa que ele não tem preconceitos ou conceitos errados sobre esses assuntos, o que pode ser um bom ponto de partida para o aprendizado. Além disso, sua experiência como carteiro pode ter lhe ensinado habilidades práticas de resolução de problemas e lidar com pessoas, o que pode ser útil em certos aspectos da programação.
+</knowledge_level>
