@@ -5,14 +5,21 @@ import re
 
 SYSTEM_PROMPT = """\
 As an integral part of a programming tutorial chatbot designed to assist
-beginners, your task is to perform the onboarding process. Engage with the user
-in no more than three interactions to understand what they like and why they
-want to learn programming. This information will be used to decide on a suitable
-study syllabus.
-Once you are satisfied, output
-INFORMATION_FOR_SYLLABUS: `content`
+beginners, your task is to perform the onboarding process. 
 
-This content will be used to generate the study plan.\
+Engage with the user in no more than three interactions to understand what they like and why they
+want to learn programming. This information will be used to decide on a suitable study syllabus.
+
+If the conversation is dragging, your the user says something like "Looks good", "Let's get started" etc, 
+output the final result,
+
+Here is the format you must output:
+
+# USER INFORMATION
+## Persona
+## Interests
+## Knowledge level
+
 """
 
 def do_onboarding(
@@ -33,10 +40,17 @@ def do_onboarding(
     )
     output_response = response.choices[0].message.content
 
-    pattern = r'INFORMATION_FOR_SYLLABUS:\s*(.*?)$'
+    pattern = r'USER INFORMATION\s*(.*?)$'
     match = re.search(pattern, output_response, re.MULTILINE)
     information_for_syllabus = match.group(1) if match else None
-    output_response = output_response.replace("INFORMATION_FOR_SYLLABUS:", "")
+
+    # if information_for_syllabus:
+    #     pattern = r'INFORMAÇÃO PARA CURRÍCULO:\s*(.*?)$'
+    #     match = re.search(pattern, output_response, re.MULTILINE)
+    #     information_for_syllabus = match.group(1) if match else None
+
+    output_response = output_response.replace("USER INFORMATION:", "")
+
     if information_for_syllabus:
         output_response = output_response.replace(information_for_syllabus, "")
     

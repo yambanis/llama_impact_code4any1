@@ -104,10 +104,16 @@ def execute_router(
 
 def execute_tool_call(
     tool_call: ChatCompletionMessageToolCall,
-    implementations: dict[str, dict[str, Any]],
+    user_context,
+    curriculum
 ) -> Any:
+    
+    question_flow._state['user_persona'] = user_context
+    question_flow._state['curriculum'] = curriculum
+
+
     args = json.loads(tool_call.function.arguments)
-    function_to_call = implementations[tool_call.function.name]
+    function_to_call = TOOL_IMPLEMENTATIONS[tool_call.function.name]
     tool_response = function_to_call(**args)
     logger.debug(tool_response)
     return tool_response

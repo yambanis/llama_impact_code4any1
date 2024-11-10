@@ -69,7 +69,7 @@ def message():
         else:
             try:
                 tool_call = execute_router(incoming_msg, memory, client)
-                out = execute_tool_call(tool_call)
+                out = execute_tool_call(tool_call, db.get_user_context(user_id), db.get_curriculum(user_id))
                 out, history = chat_final_response(tool_call.function.name, out, memory, client)
                 db.update_memory(user_id, json.dumps(history))
             except ValueError:

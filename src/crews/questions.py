@@ -1,7 +1,7 @@
 from crewai import Flow
 from crewai.flow.flow import listen, start
 from crewai import Agent, Task, Crew
-from llama_impact_code4any1.crews.base_config import llm, agents_config, tasks_config
+from src.base_crewai_config import llm, agents_config, tasks_config
 
 
 question_creation_agent = Agent(
@@ -34,23 +34,12 @@ question_crew = Crew(
 class questionFlow(Flow):
     @start()
     def fetch_user_info(self):
-        with open('user_persona.txt', 'r') as f:
-            user_persona = f.read()
-        self.state['user_persona'] = user_persona  
-        with open('curriculum.txt', 'r') as f:
-            curriculum = f.read()
-        self.state['curriculum'] = curriculum  
-
         return {
-            'user_persona': user_persona,
-            'curriculum': curriculum
+            'user_persona': self.state['user_persona'],
+            'curriculum': self.state['curriculum']
         }
     
     @listen(fetch_user_info)
     def question_creation(self, inputs):
-        question = question_crew.kickoff(inputs=inputs)
-
-        with open('user_messages.txt', 'w+') as f:
-            f.write(str(question))
-    
+        question = question_crew.kickoff(inputs=inputs)    
         return question
