@@ -21,6 +21,11 @@ WEIGHTS = {
     "response_without_tools": float("-inf"),
     "create_topic_explanation": 1.0,
 }
+TOOLS_IMPLEMENTATION = {
+    topic_tool.EXPLAIN_FUNCTION_NAME: topic_tool.create_explanation, 
+    question_tool.QUESTION_FUNCTION_NAME: question_tool.create_explanation, 
+    evaluate_tool.EVALUATE_FUNCTION_NAME: evaluate_tool.create_explanation, 
+}
 
 
 # nao sei typar pq nao rodei rs
@@ -69,7 +74,8 @@ def execute_tool_call(tool_call):
 
     if tool_call.function.name == "do_nothing":
         tool_response = "nothing"
-    elif tool_call.function.name == "create_topic_explanation":
-        tool_response = create_explanation(**args)
+    else:
+        function_to_call = TOOLS_IMPLEMENTATION[tool_call.function.name]
+        tool_response = function_to_call(**args)
 
     return tool_response
