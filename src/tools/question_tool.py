@@ -21,6 +21,8 @@ create_question_function = {
 }
 
 
-# TODO
-def create_topic_question(*args, **kwargs):
-    return "Essa mensagem significa que o agente está fazendo uma pergunta"
+# TODO: Definir o observation no flow
+# TODO: Pegar o tópico do state e definir no flow
+def create_topic_question(flow, *args, **kwargs):
+    question = flow.kickoff()
+    return question

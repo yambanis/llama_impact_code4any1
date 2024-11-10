@@ -21,6 +21,7 @@ evaluate_question_function = {
 }
 
 
-# TODO
-def evaluate_user_answer(*args, **kwargs):
-    return kwargs
+# TODO: Definir o observation no flow
+def evaluate_user_answer(flow, *args, **kwargs):
+    flow.kickoff()
+    return "Essa mensagem significa que o agente está avaliando a resposta do usuário"

@@ -21,6 +21,7 @@ update_curriculum_function = {
 }
 
 
-# TODO
+# TODO: Pegar o tópico do state e definir no flow
+# TODO: Atualizar o status do tópico no state
 def update_curriculum(*args, **kwargs):
     return "Essa mensagem significa que o agente está atualizando a ementa"

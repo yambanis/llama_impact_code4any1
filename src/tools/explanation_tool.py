@@ -21,8 +21,10 @@ create_explanation_function = {
 }
 
 
-# TODO
-def explain_topic(*args, **kwargs):
+# TODO: Definir o observation no flow
+# TODO: Pegar o tópico do state e definir no flow
+def explain_topic(flow, *args, **kwargs):
+    flow.kickoff()
     return "Essa mensagem significa que o agente está explicando um tópico"
     # TODO: Call algum crew AI do Gui
     # Maybe we want to add the params of history and of user information(?)

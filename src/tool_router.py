@@ -1,9 +1,15 @@
 import json
+import logging
+from functools import partial
 from typing import Any
 
 from groq import Groq
+from groq.types.chat.chat_completion_message_tool_call import (
+    ChatCompletionMessageToolCall,
+)
 from retrying import retry
 
+from src.crews.questions import questionFlow
 from src.tools import (
     do_nothing_tool,
     evaluation_tool,
@@ -11,6 +17,8 @@ from src.tools import (
     question_tool,
     update_state_tool,
 )
+
+logger = logging.getLogger("router")
 
 SYSTEM_PROMPT = """\
 You are part of a system that teaches programming.
@@ -34,10 +42,23 @@ WEIGHTS = {
     for tool in TOOLS
 }
 
+explanation_flow = "TODO"
+question_flow = questionFlow()
+evaluation_flow = "TODO"
+
 TOOL_IMPLEMENTATIONS = {
-    explanation_tool.FUNCTION_NAME: explanation_tool.explain_topic,
-    question_tool.FUNCTION_NAME: question_tool.create_topic_question,
-    evaluation_tool.FUNCTION_NAME: evaluation_tool.evaluate_user_answer,
+    explanation_tool.FUNCTION_NAME: partial(
+        explanation_tool.explain_topic,
+        flow=explanation_flow,
+    ),
+    question_tool.FUNCTION_NAME: partial(
+        question_tool.create_topic_question,
+        flow=question_flow,
+    ),
+    evaluation_tool.FUNCTION_NAME: partial(
+        evaluation_tool.evaluate_user_answer,
+        flow=evaluation_flow,
+    ),
     update_state_tool.FUNCTION_NAME: update_state_tool.update_curriculum,
     do_nothing_tool.FUNCTION_NAME: do_nothing_tool.do_nothing,
 }
@@ -81,14 +102,12 @@ def execute_router(
     else:
         raise ValueError()
 
-
-# nao sei typar pq nao rodei rs
 def execute_tool_call(
-    tool_call: Any,
+    tool_call: ChatCompletionMessageToolCall,
     implementations: dict[str, dict[str, Any]],
 ) -> Any:
     args = json.loads(tool_call.function.arguments)
     function_to_call = implementations[tool_call.function.name]
     tool_response = function_to_call(**args)
-
+    logger.debug(tool_response)
     return tool_response
