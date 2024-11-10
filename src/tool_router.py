@@ -6,9 +6,9 @@ from retrying import retry
 
 from src.tools import (
     do_nothing_tool,
-    evaluate_tool,
+    evaluation_tool,
+    explanation_tool,
     question_tool,
-    topic_tool,
     update_state_tool,
 )
 
@@ -18,10 +18,10 @@ Choose the function that fits best the next user message.
 """
 
 TOOLS = [
-    topic_tool.create_explanation_function,
+    explanation_tool.create_explanation_function,
     do_nothing_tool.do_nothing_function,
     question_tool.create_question_function,
-    evaluate_tool.evaluate_question_function,
+    evaluation_tool.evaluate_question_function,
     update_state_tool.update_curriculum_function,
 ]
 
@@ -34,10 +34,10 @@ WEIGHTS = {
     for tool in TOOLS
 }
 
-TOOLS_IMPLEMENTATION = {
-    topic_tool.FUNCTION_NAME: topic_tool.explain_topic,
+TOOL_IMPLEMENTATIONS = {
+    explanation_tool.FUNCTION_NAME: explanation_tool.explain_topic,
     question_tool.FUNCTION_NAME: question_tool.create_topic_question,
-    evaluate_tool.FUNCTION_NAME: evaluate_tool.evaluate_user_answer,
+    evaluation_tool.FUNCTION_NAME: evaluation_tool.evaluate_user_answer,
     update_state_tool.FUNCTION_NAME: update_state_tool.update_curriculum,
     do_nothing_tool.FUNCTION_NAME: do_nothing_tool.do_nothing,
 }
@@ -68,7 +68,7 @@ def execute_router(
     # If len is less than 1, this raises an error and triggers retry.
     tool_calls = sorted(
         [
-            (call, WEIGHTS[call.function.name])
+            (call, weights[call.function.name])
             for call in chat_completion.choices[0].message.tool_calls
             if call.function.name in tool_names
         ],
@@ -84,9 +84,12 @@ def execute_router(
 
 
 # nao sei typar pq nao rodei rs
-def execute_tool_call(tool_call: Any) -> Any:
+def execute_tool_call(
+    tool_call: Any,
+    implementations: dict[str, dict[str, Any]],
+) -> Any:
     args = json.loads(tool_call.function.arguments)
-    function_to_call = TOOLS_IMPLEMENTATION[tool_call.function.name]
+    function_to_call = implementations[tool_call.function.name]
     tool_response = function_to_call(**args)
 
     return tool_response
