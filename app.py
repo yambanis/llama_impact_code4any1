@@ -13,7 +13,7 @@ from src.flows import FullFlow
 from src.db import UserDatabase
 from src.onboarding_chat import do_onboarding
 from src.llama_guard import get_is_safe_llamaguard_response
-
+from src.curriculum import CurriculumFlow
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -22,16 +22,6 @@ app = Flask(__name__)
 client = Groq(
     api_key=os.getenv("GROQ_API_KEY")
 )
-llm = LLM(
-    model="groq/llama-3.1-70b-versatile", 
-    api_key=os.getenv("GROQ_API_KEY")
-)
-# Define file paths for YAML configurations
-files = {
-    'agents': 'configs/agents.yaml',
-    'tasks': 'configs/tasks.yaml'
-}
-
 # Replace the global db instance with a function to get db connection
 def get_db():
     if 'db' not in g:
@@ -43,12 +33,6 @@ def close_db(error):
     db = g.pop('db', None)
     if db is not None:
         db.close()
-
-# Load configurations from YAML files
-configs = {}
-for config_type, file_path in files.items():
-    with open(file_path, 'r') as file:
-        configs[config_type] = yaml.safe_load(file)
 
 @app.route('/message', methods=['POST'])
 def message():
@@ -74,12 +58,15 @@ def message():
 
             if information_for_syllabus:
                 db.user_is_onboarded(user_id)
+                db.update_user_context(user_id, information_for_syllabus)
                 print("User is onboarded")
-            out = str(response_message)
+                curriculum_flow = CurriculumFlow()
+                curriculum_flow._state['message'] = db.get_user_context(user_id)
+                curriculum_message = curriculum_flow.kickoff()
+                db.update_curriculum(user_id, str(curriculum_message))
 
-        else:
-            out = "nothing yet"
-    
+            out = str(response_message)
+                
     # tool_use = decide_tool(message, memory, ementa) # esqueleto que temos
     # observacao_tool = use tool # esqueleto que temos
     # response_message = chat_response(message, memory, tool_use, observacao_tool)

@@ -70,17 +70,6 @@ class UserDatabase:
         self.conn.commit()
         return cursor.rowcount > 0
 
-    def update_curriculum(self, user_id, curriculum_data):
-        """Update user's curriculum data."""
-        cursor = self.conn.cursor()
-        curriculum_json = json.dumps(curriculum_data) if curriculum_data else None
-        cursor.execute(
-            "UPDATE users SET curriculum = ? WHERE user_id = ?",
-            (curriculum_json, user_id)
-        )
-        self.conn.commit()
-        return cursor.rowcount > 0
-
     def update_user_context(self, user_id, context_data):
         """Update user's context data."""
         cursor = self.conn.cursor()
@@ -173,6 +162,25 @@ class UserDatabase:
         self.conn.commit()
         return cursor.rowcount > 0
 
+    def get_curriculum(self, user_id):
+        """Get user's curriculum from the database."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT curriculum FROM users WHERE user_id = ?", (user_id,))
+        return cursor.fetchone()[0]
+    
+    def update_curriculum(self, user_id, curriculum):
+        """Update user's curriculum in the database."""
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE users SET curriculum = ? WHERE user_id = ?", (curriculum, user_id))
+        self.conn.commit()
+        return cursor.rowcount > 0
+    
+    def get_user_context(self, user_id):
+        """Get user's user_context from the database."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT user_context FROM users WHERE user_id = ?", (user_id,))
+        return cursor.fetchone()[0]
+    
     def close(self):
         """Close the database connection."""
         self.conn.close()
