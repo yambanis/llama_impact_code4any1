@@ -129,7 +129,24 @@ teaching_help:
     ## Hints: Provide a series of hints that guide the user towards the correct answer.
     ## Resources: Share external resources that explain the concept in more detail.
     ## Feedback: Provide feedback on the user's progress and encourage them to keep trying.
-  
+
+explain_topic:
+  description: >
+    The user {user_persona} needs to learn the topic {topic}.
+    Provide a simple and clear explanation and examples to help them solve it.
+  expected_output: >
+    Provide hints and guidance to help the explain the topic.
+    Also provide external resources that explain the concept in more detail.
+    ## Introduction: Provide a simple and clear explanation to the topic.
+    ## Explanation: Explain the main topic in a simple manner, taking into account the knowledge level.
+    ## Examples: Share examples of applying the topic, considering the user preferences.
+
+choose_topic:
+  description: >
+    The user {user_persona} needs to learn a topic from the curriculum {curriculum}.
+    Choose the best topic for them to learn now.
+  expected_output: >
+    ## Topic: The topic that you chose for the user to learn.
 
 create_curriculum:
   description: >

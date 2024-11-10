@@ -1,8 +1,7 @@
-from crewai import Flow
+from crewai import Agent, Crew, Flow, Task
 from crewai.flow.flow import listen, start
-from crewai import Agent, Task, Crew
-from llama_impact_code4any1.crews.base_config import llm, agents_config, tasks_config
 from crewai_tools import SerperDevTool
+from src.crews.base_config import agents_config, llm, tasks_config
 
 curriculum_builder = Agent(
   config=agents_config['curriculum_builder'],

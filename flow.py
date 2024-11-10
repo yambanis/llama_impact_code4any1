@@ -1,7 +1,7 @@
-from llama_impact_code4any1.crews.onboarding import onboardingFlow
-from llama_impact_code4any1.crews.questions import questionFlow
-from llama_impact_code4any1.crews.help import helpFlow
-from llama_impact_code4any1.crews.curriculum import curriculumFlow
+from src.crews.curriculum import curriculumFlow
+from src.crews.help import helpFlow
+from src.crews.onboarding import onboardingFlow
+from src.crews.questions import questionFlow
 
 oflow = onboardingFlow()
 oflow.plot("onboarding_flow")
