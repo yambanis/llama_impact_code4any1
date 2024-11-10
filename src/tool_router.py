@@ -40,7 +40,7 @@ def execute_router(
     if history[0]["role"] == "system":
         history[0] = {"role": "system", "content": SYSTEM_PROMPT}
     else:
-      history = {"role": "system", "content": SYSTEM_PROMPT} + history
+        history = {"role": "system", "content": SYSTEM_PROMPT} + history
 
 
     chat_completion = client.chat.completions.create(
