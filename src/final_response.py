@@ -1,13 +1,14 @@
-from groq import Groq
-from typing import List, Dict
+from typing import Dict, List
 
+from groq import Groq
 
 SYSTEM_PROMPT = """\
 You are an integral part of a programming tutorial chatbot designed to assist
 beginners. As the final layer of user interaction, your role is to provide clear
 and helpful responses that the user will see directly. Our system has
 preprocessed data and will supply you with relevant details about useful tools
-to guide your answers and improve the learning experience for the user.\
+to guide your answers and improve the learning experience for the user.
+Always answer in the same language of the user.\
 """
 
 # client = Groq(api_key="...")

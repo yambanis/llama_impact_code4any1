@@ -9,7 +9,7 @@ from groq.types.chat.chat_completion_message_tool_call import (
 )
 from retrying import retry
 
-from src.crews.questions import questionFlow
+from src.crews.questions import explanationFlow, questionFlow
 from src.tools import (
     do_nothing_tool,
     evaluation_tool,
@@ -42,9 +42,8 @@ WEIGHTS = {
     for tool in TOOLS
 }
 
-explanation_flow = "TODO"
+explanation_flow = explanationFlow()
 question_flow = questionFlow()
-evaluation_flow = "TODO"
 
 TOOL_IMPLEMENTATIONS = {
     explanation_tool.FUNCTION_NAME: partial(
@@ -55,10 +54,7 @@ TOOL_IMPLEMENTATIONS = {
         question_tool.create_topic_question,
         flow=question_flow,
     ),
-    evaluation_tool.FUNCTION_NAME: partial(
-        evaluation_tool.evaluate_user_answer,
-        flow=evaluation_flow,
-    ),
+    evaluation_tool.FUNCTION_NAME: evaluation_tool.evaluate_user_answer,
     update_state_tool.FUNCTION_NAME: update_state_tool.update_curriculum,
     do_nothing_tool.FUNCTION_NAME: do_nothing_tool.do_nothing,
 }
