@@ -23,4 +23,4 @@ update_curriculum_function = {
 
 # TODO
 def update_curriculum(*args, **kwargs):
-    return kwargs
+    return "Essa mensagem significa que o agente está atualizando a ementa"

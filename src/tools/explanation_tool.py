@@ -23,7 +23,7 @@ create_explanation_function = {
 
 # TODO
 def explain_topic(*args, **kwargs):
-    return kwargs
+    return "Essa mensagem significa que o agente está explicando um tópico"
     # TODO: Call algum crew AI do Gui
     # Maybe we want to add the params of history and of user information(?)
     # Probably inside the flow itself.

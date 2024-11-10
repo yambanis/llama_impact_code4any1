@@ -23,4 +23,4 @@ create_question_function = {
 
 # TODO
 def create_topic_question(*args, **kwargs):
-    return kwargs
+    return "Essa mensagem significa que o agente está fazendo uma pergunta"
