@@ -124,7 +124,9 @@ teaching_help:
     Provide hints and guidance to help them solve it.
   expected_output: >
     Provide hints and guidance to help the user solve the question.
+    Also provide external resources that explain the concept in more detail.
     DO NOT GIVE THE ANSWER.
     ## Hints: Provide a series of hints that guide the user towards the correct answer.
+    ## Resources: Share external resources that explain the concept in more detail.
     ## Feedback: Provide feedback on the user's progress and encourage them to keep trying.
   
