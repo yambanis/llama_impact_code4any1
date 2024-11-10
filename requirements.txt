@@ -4,3 +4,4 @@ twilio
 groq
 python-dotenv
 unidecode
+retrying

@@ -6,9 +6,9 @@ from retrying import retry
 
 from src.tools import (
     do_nothing_tool,
-    evaluate_tool,
+    evaluation_tool,
     question_tool,
-    topic_tool,
+    explanation_tool,
     update_state_tool,
 )
 
@@ -18,15 +18,15 @@ Choose the function that fits best the next user message.
 """
 
 TOOLS = [
-    topic_tool.create_explanation_function,
+    explanation_tool.create_explanation_function,
     do_nothing_tool.do_nothing_function,
     question_tool.create_question_function,
-    evaluate_tool.evaluate_question_function,
+    evaluation_tool.evaluate_question_function,
     update_state_tool.update_curriculum_function,
 ]
 
 WEIGHTS = {
-    tool.function["name"]: (
+    tool["function"]["name"]: (
         float("-inf")
         if tool["function"]["name"] == do_nothing_tool.FUNCTION_NAME
         else 1.0
@@ -35,9 +35,9 @@ WEIGHTS = {
 }
 
 TOOLS_IMPLEMENTATION = {
-    topic_tool.FUNCTION_NAME: topic_tool.explain_topic,
+    explanation_tool.FUNCTION_NAME: explanation_tool.explain_topic,
     question_tool.FUNCTION_NAME: question_tool.create_topic_question,
-    evaluate_tool.FUNCTION_NAME: evaluate_tool.evaluate_user_answer,
+    evaluation_tool.FUNCTION_NAME: evaluation_tool.evaluate_user_answer,
     update_state_tool.FUNCTION_NAME: update_state_tool.update_curriculum,
     do_nothing_tool.FUNCTION_NAME: do_nothing_tool.do_nothing,
 }
@@ -48,8 +48,6 @@ def execute_router(
     new_message: str,
     history: list[dict[str, str]],
     client: Groq,
-    tools: list[dict[str, Any]],
-    weights: dict[str, float],
     model: str = "llama3-groq-70b-8192-tool-use-preview",
 ):
     if history[0]["role"] == "system":
@@ -57,11 +55,11 @@ def execute_router(
     else:
         history = {"role": "system", "content": SYSTEM_PROMPT} + history
 
-    tool_names = [tool["function"]["name"] for tool in tools]
+    tool_names = [tool["function"]["name"] for tool in TOOLS]
     chat_completion = client.chat.completions.create(
         messages=history + [{"role": "user", "content": new_message}],
         model=model,
-        tools=tools,
+        tools=TOOLS,
         tool_choice="required",
     )
 
@@ -77,6 +75,7 @@ def execute_router(
 
     if tool_calls:
         (tool_call, _), *_ = tool_calls
+        print(tool_call)
         return tool_call
 
     else:

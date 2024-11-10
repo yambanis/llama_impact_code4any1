@@ -40,4 +40,4 @@ def do_onboarding(
     if information_for_syllabus:
         output_response = output_response.replace(information_for_syllabus, "")
     
-    return output_response, information_for_syllabus, history + new_message
+    return output_response, information_for_syllabus, history + new_message + [{"role": "assistant", "content": output_response}]

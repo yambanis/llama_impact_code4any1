@@ -2,18 +2,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
-from crewai import LLM
 from flask import Flask, request, g
 from groq import Groq
 import json
 from twilio.twiml.messaging_response import MessagingResponse
-import yaml
 
-from src.flows import FullFlow
 from src.db import UserDatabase
 from src.onboarding_chat import do_onboarding
 from src.llama_guard import get_is_safe_llamaguard_response
 from src.curriculum import CurriculumFlow
+from src.tool_router import execute_router, execute_tool_call
+from src.final_response import chat_final_response
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -66,27 +65,21 @@ def message():
                 db.update_curriculum(user_id, str(curriculum_message))
 
             out = str(response_message)
-                
-    # tool_use = decide_tool(message, memory, ementa) # esqueleto que temos
-    # observacao_tool = use tool # esqueleto que temos
-    # response_message = chat_response(message, memory, tool_use, observacao_tool)
-    # guardar interação na memória
-    # return str(response_message)
-
-
-    
-
-
-    # test_flow = FullFlow(llm, configs)
-    # test_flow._state['message'] = incoming_msg
+        
+        else:
+            try:
+                tool_call = execute_router(incoming_msg, memory, client)
+                out = execute_tool_call(tool_call)
+                out, history = chat_final_response(tool_call.function.name, out, memory, client)
+                db.update_memory(user_id, json.dumps(history))
+            except ValueError:
+                out = "Ops, não entendi o que você disse."
 
     resp = MessagingResponse()
     msg = resp.message()
     msg.body(out)
-    # msg.media('https://cataas.com/cat')
     return str(resp)
 
 
 if __name__ == '__main__':
-
     app.run(port=9000)
