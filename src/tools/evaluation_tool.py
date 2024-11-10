@@ -30,7 +30,7 @@ Take into account that the user is a beginner in programming, so use a simple la
 """
 
 
-def evaluate_user_answer(history: list[dict[str, str]], client: Groq):
+def evaluate_user_answer(history: list[dict[str, str]], client: Groq, **kwargs):
     if not history:
         raise ValueError
 

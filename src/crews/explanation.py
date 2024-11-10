@@ -2,7 +2,7 @@ from crewai import Agent, Crew, Flow, Task
 from crewai.flow.flow import listen, start
 from crewai_tools import SerperDevTool
 
-from src.crews.base_config import agents_config, llm, tasks_config
+from src.base_crewai_config import agents_config, llm, tasks_config
 
 explanation_creation_agent = Agent(
     config=agents_config["explanation_creation_agent"], llm=llm
@@ -34,15 +34,10 @@ topic_picking_crew = Crew(
 class explanationFlow(Flow):
     @start()
     def fetch_user_info(self):
-        with open("user_persona.txt", "r") as f:
-            user_persona = f.read()
-
-        with open("curriculum.txt", "r") as f:
-            curriculum = f.read()
-
         user_input = {
-            "curriculum": curriculum,
-            "user_persona": user_persona,
+            "curriculum": self.state["curriculum"],
+            "user_persona": self.state["user_persona"],
+            "memory": self.state["memory"],
         }
 
         self.state.update(user_input)
@@ -56,6 +51,7 @@ class explanationFlow(Flow):
         return {
             "user_persona": user_input["user_persona"],
             "topic": topic.raw,
+            "memory": self.state["memory"],
         }
 
     @listen(topic_chooser)

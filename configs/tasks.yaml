@@ -100,12 +100,15 @@ question_creation:
     c) O(log n)
     d) O(n²)
     Answer b) O(n)
+
+    DO NOT GIVE THE ANSWER.
   expected_output: >
     A question that is tailored to the user's interests and knowledge level. Make sure to reply in the user's language.
     The question should contain the following structure:
     1. A brief introduction or context to set the stage. Pick a specific topic to teach the user about.
     2. The main question that challenges the user's knowledge and encourages critical thinking.
     3. A set of multiple-choice answers that provide a range of options for the user to choose from.
+    DO NOT GIVE THE ANSWER.
 
 question_critic:
   description: >
@@ -133,6 +136,7 @@ teaching_help:
 explain_topic:
   description: >
     The user {user_persona} needs to learn the topic {topic}.
+    This is the memory of the conversation: {memory}
     Provide a simple and clear explanation and examples to help them solve it.
     The explanation should be short and concise.
   expected_output: >
