@@ -11,8 +11,7 @@ study syllabus.
 Once you are satisfied, output
 INFORMATION_FOR_SYLLABUS: `content`
 
-This content will be used to generate the study plan.
-\
+This content will be used to generate the study plan.\
 """
 
 # client = Groq(api_key="...")
