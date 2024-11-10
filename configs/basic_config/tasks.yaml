@@ -134,8 +134,10 @@ explain_topic:
   description: >
     The user {user_persona} needs to learn the topic {topic}.
     Provide a simple and clear explanation and examples to help them solve it.
+    The explanation should be short and concise.
   expected_output: >
     Provide hints and guidance to help the explain the topic.
+    You need to provide a short response.
     Also provide external resources that explain the concept in more detail.
     ## Introduction: Provide a simple and clear explanation to the topic.
     ## Explanation: Explain the main topic in a simple manner, taking into account the knowledge level.

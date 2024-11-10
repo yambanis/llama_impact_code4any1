@@ -54,11 +54,12 @@ class explanationFlow(Flow):
 
         return {
             "user_persona": user_input["user_persona"],
-            "topic": topic,
+            "topic": topic.raw,
         }
 
     @listen(topic_chooser)
     def topic_explainer(self, inputs):
+        print("Entrou no topic explainer")
         explain_message = explain_crew.kickoff(inputs=inputs)
 
         return explain_message
