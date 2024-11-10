@@ -41,7 +41,7 @@ def chat_final_response(
     response = client.chat.completions.create(
         model="llama-3.1-70b-versatile", messages=history + new_message
     )
-    return response.choices[0].message
+    return response.choices[0].message.content, history + new_message + [{"role": "assistant", "content": response.choices[0].message.content}]
 
 
 # Exemplo de uso :D

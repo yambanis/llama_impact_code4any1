@@ -23,6 +23,83 @@ user_onboarding:
 question_creation:
   description: >
     Create a question tailored to the specific user. Based on their persona, tastes and knowledge level.
+    {user_persona}
+    Here are some example questions
+    **1. VARIABLES**
+
+    👶 KIDS
+    Q What is a variable like in Python?
+    a) A box where you keep your toys
+    b) A math problem
+    c) A computer game
+    d) A website
+    Answer a) A box where you keep your toys - Variables are like boxes where we store information!
+
+    👨 COMPLETE BEGINNERS
+    Q In Python, what happens when you write x = 5?
+    a) The computer creates a space in memory labeled 'x' containing 5
+    b) The letter 'x' turns into the number 5
+    c) It solves an equation
+    d) It prints 5 on the screen
+    Answer a) The computer creates a space in memory labeled 'x' containing 5
+
+    🔧 TECH SAVVY
+    Q What's the correct way to declare multiple variables in Python?
+    a) var x, y, z = 1, 2, 3
+    b) x = 1; y = 2; z = 3
+    c) x, y, z = 1, 2, 3
+    d) int x = 1, y = 2, z = 3
+    Answer c) x, y, z = 1, 2, 3
+
+    👨‍💻 EXPERTS
+    Q What's the output of this code?
+    ```python
+    x = 300
+    y = 300
+    print(x is y)
+    x = 257
+    y = 257
+    print(x is y)
+    ```
+    a) True, True
+    b) True, False
+    c) False, True
+    d) False, False
+    Answer b) True, False (due to Python's integer caching behavior)
+
+    **2. DATA STRUCTURES**
+
+    👶 KIDS
+    Q If you have a list of fruits, what's it like in Python?
+    a) A shopping cart with different fruits
+    b) A fruit salad
+    c) A picture of fruits
+    d) A fruit tree
+    Answer a) A shopping cart with different fruits
+
+    👨 COMPLETE BEGINNERS
+    Q Which of these is a list in Python?
+    a) fruits = [apple, banana, orange]
+    b) fruits = {{apple, banana, orange}}
+    c) fruits = ["apple", "banana", "orange"]
+    d) fruits = ("apple" "banana" "orange")
+    Answer c) fruits = ["apple", "banana", "orange"]
+
+    🔧 TECH SAVVY
+    Q What's the main difference between a list and a tuple in Python?
+    a) Lists can only contain numbers, tuples can contain any data type
+    b) Lists are mutable, tuples are immutable
+    c) Lists are faster to process than tuples
+    d) Tuples can be longer than lists
+    Answer b) Lists are mutable, tuples are immutable
+
+    👨‍💻 EXPERTS
+    Q What's the time complexity of inserting an element at the beginning of a list in Python?
+    a) O(1)
+    b) O(n)
+    c) O(log n)
+    d) O(n²)
+    Answer b) O(n)
   expected_output: >
     A question that is tailored to the user's interests and knowledge level. Make sure to reply in the user's language.
     The question should contain the following structure:
@@ -32,14 +109,33 @@ question_creation:
 
 question_critic:
   description: >
-    Provide feedback on the question created on the question_creation task.
-    Than, improve the question based on the feedback.
+    Make sure the question created by the question_creation_agent is specific to the user's interests and knowledge level.
+    Also that it is in the user's language and has a clear context defined.
   expected_output: >
-    <feedback>
-    Provide constructive feedback on the question created by the question_creation_agent.
-    Is it specific to the user's interests and knowledge level?
-    Does it have a specific context clearly defined for the user to progress in their learning?
-    </feedback>
-    <improved_question>
-    Provide a refined version of the question that incorporates the feedback provided.
-    </improved_question>
+    Only provide context and question.
+    DO NOT GIVE TIPS OR THE ANSWER.
+    ## Context: Provide a brief introduction or context to set the stage.
+    ## Question: The main question that challenges the user's knowledge and encourages critical thinking (multiple-choice or True-False).
+
+teaching_help:
+  description: >
+    The user {user_persona} received the question {question} and is struggling to answer it.
+    They said {user_feedback}.
+    Provide hints and guidance to help them solve it.
+  expected_output: >
+    Provide hints and guidance to help the user solve the question.
+    Also provide external resources that explain the concept in more detail.
+    DO NOT GIVE THE ANSWER.
+    ## Hints: Provide a series of hints that guide the user towards the correct answer.
+    ## Resources: Share external resources that explain the concept in more detail.
+    ## Feedback: Provide feedback on the user's progress and encourage them to keep trying.
+  
+
+create_curriculum:
+  description: >
+    Based on this user persone {user_persona} create a curriculum that is tailored to the user's interests and knowledge level.
+    Use the search_tool to find relevant websites that can help you design the curriculum.
+  expected_output: >
+    A curriculum that is engaging, challenging, and relevant to the user's interests.
+    The curriculum should include a variety of coding concepts and challenges that will help the user develop their coding skills.
+    A list of references you used to create the curriculum.

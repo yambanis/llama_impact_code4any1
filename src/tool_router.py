@@ -26,7 +26,7 @@ TOOLS = [
 ]
 
 WEIGHTS = {
-    tool.function["name"]: (
+    tool["function"]["name"]: (
         float("-inf")
         if tool["function"]["name"] == do_nothing_tool.FUNCTION_NAME
         else 1.0
@@ -48,8 +48,6 @@ def execute_router(
     new_message: str,
     history: list[dict[str, str]],
     client: Groq,
-    tools: list[dict[str, Any]],
-    weights: dict[str, float],
     model: str = "llama3-groq-70b-8192-tool-use-preview",
 ):
     if history[0]["role"] == "system":
@@ -57,18 +55,18 @@ def execute_router(
     else:
         history = {"role": "system", "content": SYSTEM_PROMPT} + history
 
-    tool_names = [tool["function"]["name"] for tool in tools]
+    tool_names = [tool["function"]["name"] for tool in TOOLS]
     chat_completion = client.chat.completions.create(
         messages=history + [{"role": "user", "content": new_message}],
         model=model,
-        tools=tools,
+        tools=TOOLS,
         tool_choice="required",
     )
 
     # If len is less than 1, this raises an error and triggers retry.
     tool_calls = sorted(
         [
-            (call, weights[call.function.name])
+            (call, WEIGHTS[call.function.name])
             for call in chat_completion.choices[0].message.tool_calls
             if call.function.name in tool_names
         ],
@@ -77,6 +75,7 @@ def execute_router(
 
     if tool_calls:
         (tool_call, _), *_ = tool_calls
+        print(tool_call)
         return tool_call
 
     else:

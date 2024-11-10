@@ -2,18 +2,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
-from crewai import LLM
 from flask import Flask, request, g
 from groq import Groq
 import json
 from twilio.twiml.messaging_response import MessagingResponse
-import yaml
 
-from src.flows import FullFlow
 from src.db import UserDatabase
 from src.onboarding_chat import do_onboarding
 from src.llama_guard import get_is_safe_llamaguard_response
-
+from src.curriculum import CurriculumFlow
+from src.tool_router import execute_router, execute_tool_call
+from src.final_response import chat_final_response
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -22,16 +21,6 @@ app = Flask(__name__)
 client = Groq(
     api_key=os.getenv("GROQ_API_KEY")
 )
-llm = LLM(
-    model="groq/llama-3.1-70b-versatile", 
-    api_key=os.getenv("GROQ_API_KEY")
-)
-# Define file paths for YAML configurations
-files = {
-    'agents': 'configs/agents.yaml',
-    'tasks': 'configs/tasks.yaml'
-}
-
 # Replace the global db instance with a function to get db connection
 def get_db():
     if 'db' not in g:
@@ -43,12 +32,6 @@ def close_db(error):
     db = g.pop('db', None)
     if db is not None:
         db.close()
-
-# Load configurations from YAML files
-configs = {}
-for config_type, file_path in files.items():
-    with open(file_path, 'r') as file:
-        configs[config_type] = yaml.safe_load(file)
 
 @app.route('/message', methods=['POST'])
 def message():
@@ -74,32 +57,29 @@ def message():
 
             if information_for_syllabus:
                 db.user_is_onboarded(user_id)
+                db.update_user_context(user_id, information_for_syllabus)
                 print("User is onboarded")
+                curriculum_flow = CurriculumFlow()
+                curriculum_flow._state['message'] = db.get_user_context(user_id)
+                curriculum_message = curriculum_flow.kickoff()
+                db.update_curriculum(user_id, str(curriculum_message))
+
             out = str(response_message)
-
+        
         else:
-            out = "nothing yet"
-    
-    # tool_use = decide_tool(message, memory, ementa) # esqueleto que temos
-    # observacao_tool = use tool # esqueleto que temos
-    # response_message = chat_response(message, memory, tool_use, observacao_tool)
-    # guardar interação na memória
-    # return str(response_message)
-
-
-    
-
-
-    # test_flow = FullFlow(llm, configs)
-    # test_flow._state['message'] = incoming_msg
+            try:
+                tool_call = execute_router(incoming_msg, memory, client)
+                out = execute_tool_call(tool_call)
+                out, history = chat_final_response(tool_call.function.name, out, memory, client)
+                db.update_memory(user_id, json.dumps(history))
+            except ValueError:
+                out = "Ops, não entendi o que você disse."
 
     resp = MessagingResponse()
     msg = resp.message()
     msg.body(out)
-    # msg.media('https://cataas.com/cat')
     return str(resp)
 
 
 if __name__ == '__main__':
-
     app.run(port=9000)
