@@ -21,7 +21,8 @@ class UserDatabase:
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             onboarded BOOLEAN DEFAULT 0,
             curriculum TEXT,
-            user_context TEXT
+            user_context TEXT,
+            memory TEXT
         )
         ''')
         self.conn.commit()
@@ -145,6 +146,32 @@ class UserDatabase:
         cursor = self.conn.cursor()
         cursor.execute("SELECT 1 FROM users WHERE user_id = ?", (user_id,))
         return cursor.fetchone() is not None
+
+    def user_onboarded(self, user_id):
+        """Check if a user is onboarded in the database."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT onboarded FROM users WHERE user_id = ?", (user_id,))
+        return cursor.fetchone()[0]
+    
+    def user_is_onboarded(self, user_id):
+        """Update user's onboarded status to True."""
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE users SET onboarded = 1 WHERE user_id = ?", (user_id,))
+        self.conn.commit()
+        return cursor.rowcount > 0
+    
+    def get_memory(self, user_id):
+        """Get user's memory from the database."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT memory FROM users WHERE user_id = ?", (user_id,))
+        return cursor.fetchone()[0]
+    
+    def update_memory(self, user_id, memory):
+        """Update user's memory in the database."""
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE users SET memory = ? WHERE user_id = ?", (memory, user_id))
+        self.conn.commit()
+        return cursor.rowcount > 0
 
     def close(self):
         """Close the database connection."""

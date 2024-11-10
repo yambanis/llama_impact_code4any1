@@ -319,7 +319,7 @@ _BAD_WORDS = [
 
 def get_is_safe_llamaguard_response(client: Groq, user_message: str) -> bool:
     pattern = r"\b(" + "|".join(re.escape(word) for word in _BAD_WORDS) + r")\b"
-    if re.search(pattern, unidecode(user_message), re.IGNORECASE):
+    if re.search(pattern, user_message, re.IGNORECASE):
         return False
     chat_completion = client.chat.completions.create(
         messages=[{"role": "user", "content": user_message}],
@@ -328,7 +328,7 @@ def get_is_safe_llamaguard_response(client: Groq, user_message: str) -> bool:
     return chat_completion.choices[0].message.content.startswith("safe")
 
 
-get_is_safe_llamaguard_response(client, "curently")
+# get_is_safe_llamaguard_response(client, "curently")
 
 
 # Exemplo de uso :D

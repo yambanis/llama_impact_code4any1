@@ -3,3 +3,4 @@ crewai
 twilio
 groq
 python-dotenv
+unidecode

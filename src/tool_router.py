@@ -16,7 +16,7 @@ TOOL_NAMES = [
     question_tool.create_question_function,
     evaluate_tool.evaluate_question_function,
 ]
-TOOLS = [tool["function"]["name"] for tool in tools]
+TOOLS = [tool["function"]["name"] for tool in TOOL_NAMES]
 WEIGHTS = {
     "response_without_tools": float("-inf"),
     "create_topic_explanation": 1.0,
@@ -28,11 +28,10 @@ TOOLS_IMPLEMENTATION = {
 }
 
 
-# nao sei typar pq nao rodei rs
 @retry(stop_max_attempt_number=5, wait_fixed=100)
 def execute_router(
     new_message: str,
-    history: List[Dict[str, str]],
+    history: list[dict[str, str]],
     client: Groq,
 ):
 
@@ -44,7 +43,7 @@ def execute_router(
 
 
     chat_completion = client.chat.completions.create(
-        messages=history + [{"role": "user", "content": new_message}],
+        messages= history + [{"role": "user", "content": new_message}],
         model="llama3-groq-70b-8192-tool-use-preview",
         tools=TOOLS,
         tool_choice="required",
@@ -53,9 +52,9 @@ def execute_router(
     # If len is less then 1, this raises an error and triggers retry.
     tool_calls = sorted(
         [
-            (call, weights[call.function.name])
+            (call, WEIGHTS[call.function.name])
             for call in chat_completion.choices[0].message.tool_calls
-            if call.function.name in tool_names
+            if call.function.name in TOOLS
         ],
         key=lambda x: x[1],
     )
@@ -68,7 +67,6 @@ def execute_router(
         raise ValueError()
 
 
-# nao sei typar pq nao rodei rs
 def execute_tool_call(tool_call):
     args = json.loads(tool_call.function.arguments)
 

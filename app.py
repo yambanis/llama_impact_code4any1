@@ -4,17 +4,24 @@ load_dotenv()
 import os
 from crewai import LLM
 from flask import Flask, request, g
+from groq import Groq
+import json
 from twilio.twiml.messaging_response import MessagingResponse
 import yaml
 
 from src.flows import FullFlow
 from src.db import UserDatabase
+from src.onboarding_chat import do_onboarding
+from src.llama_guard import get_is_safe_llamaguard_response
 
 import warnings
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
 
+client = Groq(
+    api_key=os.getenv("GROQ_API_KEY")
+)
 llm = LLM(
     model="groq/llama-3.1-70b-versatile", 
     api_key=os.getenv("GROQ_API_KEY")
@@ -46,17 +53,53 @@ for config_type, file_path in files.items():
 @app.route('/message', methods=['POST'])
 def message():
     db = get_db()  # Get thread-local database connection
-    if not db.user_exists(request.values.get('From', '')):
-        db.create_user(request.values.get('From', ''), request.values.get('ProfileName', ''))
+    user_id = request.values.get('From', '')
     incoming_msg = request.values.get('Body', '').lower()
+
+    is_safe = get_is_safe_llamaguard_response(client, incoming_msg)
+    if not is_safe:
+        print("Message is not safe")
+        out = "Desculpe, não posso responder a isso."
+    else:
+        out = ""
+        if not db.user_exists(user_id):
+            db.create_user(user_id, request.values.get('ProfileName', ''))
+        memory = db.get_memory(user_id)
+        if not memory:
+            memory = "[]"
+        memory = json.loads(memory)
+        if not db.user_onboarded(user_id):
+            response_message, information_for_syllabus, history = do_onboarding(incoming_msg, memory, client)
+            db.update_memory(user_id, json.dumps(history))
+
+            if information_for_syllabus:
+                db.user_is_onboarded(user_id)
+                print("User is onboarded")
+            out = str(response_message)
+
+        else:
+            out = "nothing yet"
+    
+    # tool_use = decide_tool(message, memory, ementa) # esqueleto que temos
+    # observacao_tool = use tool # esqueleto que temos
+    # response_message = chat_response(message, memory, tool_use, observacao_tool)
+    # guardar interação na memória
+    # return str(response_message)
+
+
+    
+
+
+    # test_flow = FullFlow(llm, configs)
+    # test_flow._state['message'] = incoming_msg
+
     resp = MessagingResponse()
-    test_flow = FullFlow(llm, configs)
     msg = resp.message()
-    test_flow._state['message'] = incoming_msg
-    msg.body(str(test_flow.kickoff()))
+    msg.body(out)
     # msg.media('https://cataas.com/cat')
     return str(resp)
 
 
 if __name__ == '__main__':
+
     app.run(port=9000)

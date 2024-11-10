@@ -25,7 +25,7 @@ def chat_final_response(
     if history[0]["role"] == "system":
         history[0] = {"role": "system", "content": SYSTEM_PROMPT}
     else:
-      history = {"role": "system", "content": SYSTEM_PROMPT} + history
+        history = {"role": "system", "content": SYSTEM_PROMPT} + history
 
     if tool_used != "do_nothing":
         new_message = [
