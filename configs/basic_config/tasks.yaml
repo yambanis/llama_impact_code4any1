@@ -136,6 +136,7 @@ explain_topic:
     Provide a simple and clear explanation and examples to help them solve it.
     The explanation should be short and concise.
   expected_output: >
+    The response should be at most 3 sentences.
     Provide hints and guidance to help the explain the topic.
     You need to provide a short response.
     Also provide external resources that explain the concept in more detail.
@@ -147,8 +148,10 @@ choose_topic:
   description: >
     The user {user_persona} needs to learn a topic from the curriculum {curriculum}.
     Choose the best topic for them to learn now.
+    You should focus on a single skill that they will learn within the topic.
   expected_output: >
-    ## Topic: The topic that you chose for the user to learn.
+    The response should be at most 3 sentences.
+    ## Topic: The topic that you chose for the user to learn. Focused on a single programming skill that they will learn.
 
 create_curriculum:
   description: >
